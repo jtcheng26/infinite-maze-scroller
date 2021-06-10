@@ -1,0 +1,2 @@
+# Infinite Maze Scroller
+Procedural maze generation using [Eller's Algorithm](http://www.neocomputer.org/projects/eller.html). Algorithm mplemented in C++ using Emscripten and WebAssembly, DOM manipulation done in plain Javascript. Random colors for fun!
