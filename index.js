@@ -10,87 +10,6 @@ function elementInViewport(el) {
 
 const columns = 10
 
-const colors = [
-  {
-    dark: "#0ba3a8",
-    light: "#27ebf1",
-    bg: "#054648",
-    shade: "#021718",
-  },
-  {
-    dark: "#9C1FFF",
-    light: "#c780ff",
-    bg: "#470080",
-    shade: "#2b004d",
-  },
-  {
-    dark: "#4940d9",
-    light: "#716ae1",
-    bg: "#1a156a",
-    shade: "#100d40",
-  },
-  {
-    dark: "#f721bd",
-    light: "#fb84da",
-    bg: "#7b045b",
-    shade: "#4a0337",
-  },
-  {
-    dark: "#2158c4",
-    light: "#6691e5",
-    bg: "#12316d",
-    shade: "#0b1d41",
-  },
-  {
-    dark: "#1e8fc7",
-    light: "#90cfee",
-    bg: "#11506f",
-    shade: "#0a3042"
-  },
-  {
-    dark: "#7386a6",
-    light: "#b1bccd",
-    bg: "#323c4e",
-    shade: "#1e242f",
-  },
-  {
-    dark: "#fbe91d",
-    light: "#fffde6",
-    bg: "#afa103",
-    shade: "#7d7302",
-  },
-  {
-    dark: "#55ac07",
-    light: "#a2f853",
-    bg: "#254a03",
-    shade: "#0c1901",
-  },
-  {
-    dark: "#bb935e",
-    light: "#d9c3a6",
-    bg: "#594426",
-    shade: "#362917",
-  },
-  {
-    dark: "#ce5317",
-    light: "#ed8d5e",
-    bg: "#732e0d",
-    shade: "#451c08",
-  },
-  {
-    dark: "#df0f06",
-    light: "#fa5852",
-    bg: "#7c0804",
-    shade: "#4a0502",
-  },
-  {
-    dark: "#bfbfbf",
-    light: "#FFFFFF",
-    bg: "#8c8c8c",
-    shade: "#595959"
-  },
-]
-/*
 function shadeColor(color, percent) {
 
   var R = parseInt(color.substring(1,3),16);
@@ -111,7 +30,44 @@ function shadeColor(color, percent) {
 
   return "#"+RR+GG+BB;
 }
-*/
+
+function randomColor() {
+  /* Random colors within a range */
+  var C = [];
+  const minVibrancy = 200; // minimum guaranteed value for at least one slider
+  const minValue = 45;
+  const maxValue = 180;
+
+  for (var i=0;i<3;i++) {
+    C[i] = minValue + parseInt(Math.random() * (maxValue - minValue));
+  }
+
+  /* We want vibrant colors (make sure at least one slider is high enough) */
+  if (C[0] < minVibrancy && C[1] < minVibrancy && C[2] < minVibrancy) {
+    C[parseInt(Math.random() * 3)] = minVibrancy;
+  }
+
+  /* Convert back to hex */
+  for (var i=0;i<3;i++) {
+    C[i] = ((C[i].toString(16).length==1)?"0"+C[i].toString(16):C[i].toString(16));
+  }
+
+  return "#" + C[0] + C[1] + C[2];
+}
+
+const rc = randomColor();
+const color = {
+  dark: rc,
+  light: shadeColor(rc, 50),
+  bg: shadeColor(rc, -60),
+  shade: shadeColor(rc, -85),
+}
+console.log(color)
+document.body.style.setProperty("--node-color-light", color.light)
+document.body.style.setProperty("--node-color-dark", color.dark)
+document.body.style.setProperty("--background-color", color.bg)
+document.body.style.setProperty("--shadow-color", color.shade)
+
 function onWindowResize() {
   document.body.style.setProperty("--node-size", (window.innerWidth / (2 * columns + 1)) + "px")
   document.body.style.setProperty("--node-shadow-size", (window.innerWidth / (2 * columns + 1) / 10) + "px")
@@ -121,16 +77,6 @@ function onWindowResize() {
 }
 
 Module['onRuntimeInitialized'] = function() {
-  console.log("wasm loaded ");
-  const color = colors[Math.floor(Math.random() * colors.length)]
-  /*const randC = "#" + Math.floor(Math.random()*16777215).toString(16);
-  const randCDark = shadeColor(randC, -50)
-  const randCLight = shadeColor(randC, 50)
-  const randCDarker = shadeColor(randCDark, -50)*/
-  document.body.style.setProperty("--node-color-light", color.light)
-  document.body.style.setProperty("--node-color-dark", color.dark)
-  document.body.style.setProperty("--background-color", color.bg)
-  document.body.style.setProperty("--shadow-color", color.shade)
   window.addEventListener( 'resize', onWindowResize, false );
   Module.__Z4initi(columns)
   onWindowResize();

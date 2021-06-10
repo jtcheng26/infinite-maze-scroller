@@ -6,9 +6,9 @@ body {
   --node-shadow-size: 5px;
   --node-border-size: 5px;
   --node-color-dark: #9C1FFF;
-  --node-color-light: #BE6CFF;
-  --background-color: #45007B;
-  --shadow-color: #2F0055;
+  --node-color-light: ##c780ff;
+  --background-color: #470080;
+  --shadow-color: #2b004d;
 }
 
 #main {
